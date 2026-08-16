@@ -16,7 +16,7 @@ export type Project = {
     | "side";
 
   stack: string;
-  preview: string;
+  preview?: string;
   description: string;
 
   live?: string;
@@ -71,7 +71,22 @@ const projects: Project[] = [
     preview:
       "/projects/selyne.webp",
     description:
-      "Selyne is a full-stack CRM and operations platform built for freelancers and small agencies. It brings client management, sales pipelines, projects, tasks, deadlines, and workflow tracking into one customizable workspace, with team management and payroll features planned as the platform grows.",
+      "selyne is a full-stack CRM and operations platform built for freelancers and small agencies. It brings client management, sales pipelines, projects, tasks, deadlines, and workflow tracking into one customizable workspace, with team management and payroll features planned as the platform grows.",
+    live:
+      "https://selyne.vercel.app/login",
+  },
+  {
+    id: "eps",
+    name: "eps",
+    type:
+      "Full-Stack Agency CRM",
+    category: "wix",
+    stack:
+      "Wix Studio · Figma · Frontend UI · SEO · QA Testing · CRM · LMS",
+    preview:
+      "/projects/eps.webp",
+    description:
+      "contributed to the company website, CRM, and LMS through Wix Studio updates, frontend interface work, Figma designs, QA testing, and SEO improvements.",
     live:
       "https://selyne.vercel.app/login",
   },
@@ -83,11 +98,11 @@ const projects: Project[] = [
       "Client Website",
     category: "client",
     stack:
-      "HTML · CSS · JavaScript",
+      "HTML · CSS · JavaScript · Figma · Responsive Design",
     preview:
-      "/projects/virtuality.png",
+      "/projects/vs.webp",
     description:
-      "Responsive frontend work for a client service website.",
+      "built a responsive landing page for Virtuality Services, focused on clearly presenting their services and making it easy for visitors to get in touch.",
     live:
       "https://virtualityservices.com/",
   },
@@ -98,11 +113,11 @@ const projects: Project[] = [
       "Wix Website",
     category: "wix",
     stack:
-      "Wix Studio · Responsive Design",
+      "Wix Studio · Responsive Design · Figma · SEO Optimization · Content Strategy",
     preview:
-      "/projects/privarase.png",
+      "/projects/privarase.webp",
     description:
-      "A polished responsive website created with Wix Studio.",
+      "built a responsive Wix Studio site for Privarase, with clear content sections, article-style resources, mobile optimization, and a clean layout focused on privacy and cybersecurity topics.",
     live:
       "https://www.privarase.com/",
   },
@@ -115,9 +130,9 @@ const projects: Project[] = [
     stack:
       "Godot · GDScript",
     preview:
-      "/projects/rpg-game.png",
+      "/projects/rpg-pro.webp",
     description:
-      "A 2022 RPG Maker MZ experiment where I spent more time designing characters and maps than actually making the game. Somehow, that was the fun part. Inspired by OMORI. Mostly designed characters, built maps, and made little people walk around them. It was my first little dive into game development.",
+      "a 2022 RPG Maker MZ experiment where I spent more time designing characters and maps than actually making the game. Somehow, that was the fun part. Inspired by OMORI. Mostly designed characters, built maps, and made little people walk around them. It was my first little dive into game development.",
   },
   {
     id: "discord-bot",
@@ -128,9 +143,9 @@ const projects: Project[] = [
     stack:
       "JavaScript · Node.js · Discord API",
     preview:
-      "/projects/discord-bot.png",
+      "/projects/dc-bot.webp",
     description:
-      "A Discord bot I built before college while learning programming, with a custom command system and automated embeds for member joins, leaves, and server boosts.",
+      "a Discord bot I built before college while learning programming, with a custom command system and automated embeds for member joins, leaves, and server boosts.",
   },
 ];
 
@@ -218,22 +233,28 @@ export function Projects({
                 className="project-card group"
               >
                 <div className="project-card-image">
-                  <img
-                    src={
-                      project.preview
-                    }
-                    alt={
-                      project.name
-                    }
-                    className="h-full w-full object-cover opacity-40 grayscale-[35%] transition duration-300 group-hover:scale-[1.025] group-hover:opacity-60 group-hover:grayscale-0"
-                  />
+                  {project.preview && (
+                    <>
+                      <img
+                        src={
+                          project.preview
+                        }
+                        alt={
+                          project.name
+                        }
+                        className="h-full w-full object-cover opacity-40 grayscale-[35%] transition duration-300 group-hover:scale-[1.025] group-hover:opacity-60 group-hover:grayscale-0"
+                      />
 
-                  <div className="absolute inset-0 bg-black/35 transition-colors duration-300 group-hover:bg-black/20" />
+                      <div className="absolute inset-0 bg-black/35 transition-colors duration-300 group-hover:bg-black/20" />
+                    </>
+                  )}
 
                   <div className="absolute inset-0 flex items-center justify-center px-5">
                     <h2 className="text-center font-[family-name:var(--font-mono)] text-2xl font-semibold tracking-[-0.04em] text-[var(--text-soft)] transition-colors group-hover:text-[var(--text)]">
-  {project.name}
-</h2>
+                      {
+                        project.name
+                      }
+                    </h2>
                   </div>
                 </div>
 

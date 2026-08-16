@@ -103,7 +103,7 @@ export function Home() {
             </p>
 
             <a
-              href="/resume.pdf"
+              href="/juna-resume.pdf"
               download
               className="inline-flex items-center gap-2 font-[family-name:var(--font-nav)] text-[length:var(--font-xs)] font-medium text-[var(--text-dim)] transition-colors duration-200 hover:text-[var(--text)]"
             >
