@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# juna.dev
 
-## Getting Started
+my personal portfolio built with Next.js, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+designed as an interactive desktop-style experience with a macOS-inspired main window, VS Code-inspired sections, project popups, and live activity pulled from external APIs.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## tech stack
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- Next.js App Router
+- GitHub GraphQL API
+- Steam Web API
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- interactive portfolio layout
+- macOS-inspired window UI
+- VS Code-inspired about section
+- draggable project windows
+- project filtering
+- live GitHub contribution activity
+- recent GitHub repository activity
+- Steam activity integration
+- responsive layout
+- downloadable resume
+- external social links
 
-## Learn More
+## sections
 
-To learn more about Next.js, take a look at the following resources:
+### home
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+a simple introduction with links, current activity, location, and resume access.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### about
 
-## Deploy on Vercel
+an interactive developer-style section with:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- activity
+- setup / gear
+- work experience
+- GitHub activity
+- Steam activity
+- outside-code interests
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### projects
+
+a filtered project gallery with individual project windows containing:
+
+- project description
+- tech stack
+- live links
+- GitHub links where available
