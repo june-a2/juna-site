@@ -6,7 +6,9 @@ import {
   type PointerEvent,
 } from "react";
 
-import type { Project } from "./projects";
+import type {
+  Project,
+} from "./projects";
 
 type Props = {
   project: Project;
@@ -22,153 +24,205 @@ export function Window({
   project,
   onClose,
 }: Props) {
-  const [pos, setPos] = useState<Pos>({
-    x: 0,
-    y: 0,
-  });
+  const [
+    pos,
+    setPos,
+  ] =
+    useState<Pos>({
+      x: 0,
+      y: 0,
+    });
 
-  const drag = useRef({
-    active: false,
-    startX: 0,
-    startY: 0,
-    x: 0,
-    y: 0,
-  });
+  const drag =
+    useRef({
+      active: false,
+      startX: 0,
+      startY: 0,
+      x: 0,
+      y: 0,
+    });
 
-  function startDrag(
-    event: PointerEvent<HTMLDivElement>,
+  function start(
+    e: PointerEvent<HTMLDivElement>,
   ) {
     drag.current = {
       active: true,
-      startX: event.clientX,
-      startY: event.clientY,
+      startX:
+        e.clientX,
+      startY:
+        e.clientY,
       x: pos.x,
       y: pos.y,
     };
 
-    event.currentTarget.setPointerCapture(
-      event.pointerId,
-    );
+    e.currentTarget
+      .setPointerCapture(
+        e.pointerId,
+      );
   }
 
-  function moveDrag(
-    event: PointerEvent<HTMLDivElement>,
+  function move(
+    e: PointerEvent<HTMLDivElement>,
   ) {
-    if (!drag.current.active) {
+    if (
+      !drag.current.active
+    ) {
       return;
     }
 
-    const x =
-      drag.current.x +
-      event.clientX -
-      drag.current.startX;
-
-    const y =
-      drag.current.y +
-      event.clientY -
-      drag.current.startY;
-
     setPos({
-      x,
-      y,
+      x:
+        drag.current.x +
+        e.clientX -
+        drag.current.startX,
+
+      y:
+        drag.current.y +
+        e.clientY -
+        drag.current.startY,
     });
   }
 
-  function endDrag(
-    event: PointerEvent<HTMLDivElement>,
+  function end(
+    e: PointerEvent<HTMLDivElement>,
   ) {
-    drag.current.active = false;
+    drag.current.active =
+      false;
 
-    event.currentTarget.releasePointerCapture(
-      event.pointerId,
-    );
+    if (
+      e.currentTarget
+        .hasPointerCapture(
+          e.pointerId,
+        )
+    ) {
+      e.currentTarget
+        .releasePointerCapture(
+          e.pointerId,
+        );
+    }
   }
 
   return (
     <div
-      className="absolute left-1/2 top-1/2 z-50 w-[min(760px,calc(100vw-40px))] overflow-hidden rounded-[8px] border border-white/[0.08] bg-[#121212] shadow-[0_30px_100px_rgba(0,0,0,0.65)]"
-      style={{
-        transform: `translate(
-          calc(-50% + ${pos.x}px),
-          calc(-50% + ${pos.y}px)
-        )`,
+      className="project-backdrop"
+      onPointerDown={(e) => {
+        if (
+          e.target ===
+          e.currentTarget
+        ) {
+          onClose();
+        }
       }}
     >
-      <header
-        onPointerDown={startDrag}
-        onPointerMove={moveDrag}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-        className="relative flex h-12 cursor-grab touch-none select-none items-center border-b border-white/[0.05] bg-[#181818] px-4 active:cursor-grabbing"
+      <div
+        className="project-window"
+        style={{
+          transform: `translate(
+            calc(-50% + ${pos.x}px),
+            calc(-50% + ${pos.y}px)
+          )`,
+        }}
       >
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={onClose}
-            onPointerDown={(event) =>
-              event.stopPropagation()
-            }
-            aria-label="Close"
-            className="h-3 w-3 rounded-full bg-[#ff5f57]"
-          />
+        <div
+          onPointerDown={
+            start
+          }
+          onPointerMove={
+            move
+          }
+          onPointerUp={
+            end
+          }
+          onPointerCancel={
+            end
+          }
+          className="project-window-header"
+        >
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              aria-label="Close project"
+              onPointerDown={(
+                e,
+              ) =>
+                e.stopPropagation()
+              }
+              onClick={
+                onClose
+              }
+              className="h-3 w-3 rounded-full bg-[#ff5f57]"
+            />
 
-          <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
+            <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
 
-          <span className="h-3 w-3 rounded-full bg-[#28c840]" />
-        </div>
+            <span className="h-3 w-3 rounded-full bg-[#28c840]" />
+          </div>
 
-        <span className="pointer-events-none absolute left-1/2 -translate-x-1/2 font-mono text-xs text-neutral-500">
-          {project.name.toLowerCase()}
-        </span>
-      </header>
-
-      <div className="max-h-[75vh] overflow-y-auto">
-        <div className="aspect-[16/8] overflow-hidden border-b border-white/[0.05] bg-[#0b0b0b]">
-          <img
-            src={project.preview}
-            alt={`${project.name} preview`}
-            className="h-full w-full object-cover"
-          />
-        </div>
-
-        <div className="p-6 sm:p-8">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-neutral-600">
-            {project.type}
-          </p>
-
-          <h2 className="mt-3 text-3xl font-medium tracking-tight text-neutral-100">
+          <span className="project-window-title">
             {project.name}
-          </h2>
+          </span>
+        </div>
 
-          <p className="mt-3 font-mono text-xs text-neutral-500">
-            {project.stack}
-          </p>
+        <div className="project-window-scroll">
+          <div className="project-window-preview">
+            <img
+              src={
+                project.preview
+              }
+              alt={
+                project.name
+              }
+            />
+          </div>
 
-          <p className="mt-6 max-w-2xl text-sm leading-7 text-neutral-400">
-            {project.description}
-          </p>
+          <div className="project-window-body">
+            <p className="font-[family-name:var(--font-mono)] text-[length:var(--font-xs)] uppercase tracking-[0.14em] text-[var(--text-dim)]">
+              {project.type}
+            </p>
 
-          <div className="mt-8 flex flex-wrap gap-3 font-mono text-xs">
-            {project.live && (
-              <a
-                href={project.live}
-                target="_blank"
-                rel="noreferrer"
-                className="border border-white/[0.1] bg-neutral-200 px-4 py-2.5 text-neutral-950 hover:bg-white"
-              >
-                View Live ↗
-              </a>
-            )}
+            <h2 className="mt-2 text-[length:var(--font-title-sm)] font-medium tracking-[-0.03em] text-[var(--text)]">
+              {project.name}
+            </h2>
 
-            {project.github && (
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noreferrer"
-                className="border border-white/[0.08] px-4 py-2.5 text-neutral-400 hover:border-white/[0.16] hover:text-neutral-100"
-              >
-                GitHub ↗
-              </a>
+            <p className="mt-4 text-[length:var(--font-sm)] leading-6 text-[var(--text-muted)]">
+              {
+                project.description
+              }
+            </p>
+
+            <p className="mt-5 font-[family-name:var(--font-mono)] text-[length:var(--font-xs)] leading-5 text-[var(--text-dim)]">
+              {project.stack}
+            </p>
+
+            {(project.live ||
+              project.github) && (
+              <div className="mt-7 flex flex-wrap items-center gap-5">
+                {project.live && (
+                  <a
+                    href={
+                      project.live
+                    }
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-[family-name:var(--font-mono)] text-[length:var(--font-xs)] text-[var(--text-dim)] underline-offset-4 transition-colors hover:text-[var(--text)] hover:underline"
+                  >
+                    view live ↗
+                  </a>
+                )}
+
+                {project.github && (
+                  <a
+                    href={
+                      project.github
+                    }
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-[family-name:var(--font-mono)] text-[length:var(--font-xs)] text-[var(--text-dim)] underline-offset-4 transition-colors hover:text-[var(--text)] hover:underline"
+                  >
+                    github ↗
+                  </a>
+                )}
+              </div>
             )}
           </div>
         </div>

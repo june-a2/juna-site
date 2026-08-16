@@ -8,7 +8,10 @@ import {
   type ReactNode,
 } from "react";
 
-type Tab = "gear" | "activity" | "work";
+type Tab =
+  | "gear"
+  | "activity"
+  | "work";
 
 type Pos = {
   x: number;
@@ -48,6 +51,7 @@ type ActivityData = {
 
   steam: {
     configured: boolean;
+    private?: boolean;
     games: Game[];
     error?: string;
   };
@@ -55,11 +59,7 @@ type ActivityData = {
   checkedAt: string;
 };
 
-const tabs: {
-  id: Tab;
-  label: string;
-  fn: string;
-}[] = [
+const tabs = [
   {
     id: "gear",
     label: "gear.ts",
@@ -75,46 +75,77 @@ const tabs: {
     label: "work.ts",
     fn: "getExperience()",
   },
-];
+] satisfies {
+  id: Tab;
+  label: string;
+  fn: string;
+}[];
 
 export function About() {
-  const [tab, setTab] =
-    useState<Tab>("activity");
+  const [
+    tab,
+    setTab,
+  ] =
+    useState<Tab>(
+      "activity",
+    );
 
-  const [running, setRunning] =
+  const [
+    running,
+    setRunning,
+  ] =
     useState(true);
 
-  const [open, setOpen] =
-    useState<Tab | null>(null);
+  const [
+    open,
+    setOpen,
+  ] =
+    useState<Tab | null>(
+      null,
+    );
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      setRunning(false);
-      setOpen("activity");
-    }, 650);
+    const timer =
+      window.setTimeout(
+        () => {
+          setRunning(false);
+          setOpen(
+            "activity",
+          );
+        },
+        650,
+      );
 
-    return () => {
-      window.clearTimeout(timer);
-    };
+    return () =>
+      window.clearTimeout(
+        timer,
+      );
   }, []);
 
-  function run(id: Tab) {
+  function run(
+    id: Tab,
+  ) {
     setTab(id);
     setOpen(null);
     setRunning(true);
 
-    window.setTimeout(() => {
-      setRunning(false);
-      setOpen(id);
-    }, 650);
+    window.setTimeout(
+      () => {
+        setRunning(false);
+        setOpen(id);
+      },
+      650,
+    );
   }
 
-  const active = tabs.find(
-    (item) => item.id === tab,
-  )!;
+  const active =
+    tabs.find(
+      (item) =>
+        item.id === tab,
+    )!;
 
   return (
-    <div className="flex h-full w-full overflow-hidden bg-[#0f0f0f] font-mono text-sm text-neutral-400">
+    <div className="flex h-full w-full overflow-hidden bg-[var(--panel)] font-[family-name:var(--font-mono)] text-[length:var(--font-sm)] text-[var(--text-muted)]">
       <Side
         tab={tab}
         run={run}
@@ -128,7 +159,9 @@ export function About() {
 
         <div className="h-[calc(100%-32px)] overflow-hidden">
           <Crumb
-            file={active.label}
+            file={
+              active.label
+            }
           />
 
           <Code
@@ -139,7 +172,9 @@ export function About() {
 
         {running && (
           <Terminal
-            file={active.label}
+            file={
+              active.label
+            }
             fn={active.fn}
           />
         )}
@@ -162,41 +197,52 @@ function Tabs({
   run,
 }: {
   tab: Tab;
-  run: (tab: Tab) => void;
+  run: (
+    tab: Tab,
+  ) => void;
 }) {
   return (
-    <div className="flex h-8 border-b border-white/[0.04] bg-[#161616]">
-      {tabs.map((item) => {
-        const active =
-          tab === item.id;
+    <div className="flex h-8 border-b border-[var(--border-soft)] bg-[var(--panel-alt)]">
+      {tabs.map(
+        (item) => {
+          const active =
+            tab ===
+            item.id;
 
-        return (
-          <button
-            key={item.id}
-            type="button"
-            onClick={() =>
-              run(item.id)
-            }
-            className={`relative flex h-8 items-center gap-2 border-r border-white/[0.04] px-3 text-xs transition-colors ${
-              active
-                ? "bg-[#0f0f0f] text-neutral-300"
-                : "text-neutral-600 hover:bg-white/[0.02] hover:text-neutral-400"
-            }`}
-          >
-            <span className="text-[#3178c6]">
-              TS
-            </span>
+          return (
+            <button
+              key={
+                item.id
+              }
+              type="button"
+              onClick={() =>
+                run(
+                  item.id,
+                )
+              }
+              className={`relative flex h-8 items-center gap-2 border-r border-[var(--border-soft)] px-3 text-[length:var(--font-xs)] transition-colors ${
+                active
+                  ? "bg-[var(--panel)] text-[var(--text-soft)]"
+                  : "text-[var(--text-dim)] hover:text-[var(--text-muted)]"
+              }`}
+            >
+              <span className="text-[var(--accent-ts)]">
+                TS
+              </span>
 
-            <span>
-              {item.label}
-            </span>
+              <span>
+                {
+                  item.label
+                }
+              </span>
 
-            {active && (
-              <span className="absolute inset-x-0 bottom-0 h-px bg-[#569cd6]" />
-            )}
-          </button>
-        );
-      })}
+              {active && (
+                <span className="absolute inset-x-0 bottom-0 h-px bg-[var(--accent)]" />
+              )}
+            </button>
+          );
+        },
+      )}
     </div>
   );
 }
@@ -206,13 +252,15 @@ function Side({
   run,
 }: {
   tab: Tab;
-  run: (tab: Tab) => void;
+  run: (
+    tab: Tab,
+  ) => void;
 }) {
   return (
     <aside className="hidden shrink-0 md:flex">
       <Act />
 
-      <div className="w-40 border-r border-white/[0.04] bg-[#111] text-xs text-neutral-600">
+      <div className="w-40 border-r border-[var(--border-soft)] bg-[var(--window)] text-[length:var(--font-xs)] text-[var(--text-dim)]">
         <div className="flex h-8 items-center px-3 uppercase tracking-wide">
           Explorer
         </div>
@@ -221,7 +269,7 @@ function Side({
           <Row>
             <Arrow open />
 
-            <span className="text-neutral-400">
+            <span className="text-[var(--text-soft)]">
               juna
             </span>
           </Row>
@@ -236,36 +284,29 @@ function Side({
             </Row>
 
             <div className="ml-3">
-              {tabs.map((item) => (
-                <File
-                  key={item.id}
-                  active={
-                    tab === item.id
-                  }
-                  onClick={() =>
-                    run(item.id)
-                  }
-                >
-                  {item.label}
-                </File>
-              ))}
+              {tabs.map(
+                (item) => (
+                  <File
+                    key={
+                      item.id
+                    }
+                    active={
+                      tab ===
+                      item.id
+                    }
+                    onClick={() =>
+                      run(
+                        item.id,
+                      )
+                    }
+                  >
+                    {
+                      item.label
+                    }
+                  </File>
+                ),
+              )}
             </div>
-
-            <Row>
-              <Arrow />
-
-              <span>
-                projects
-              </span>
-            </Row>
-
-            <Row>
-              <Arrow />
-
-              <span>
-                public
-              </span>
-            </Row>
           </div>
         </div>
       </div>
@@ -279,7 +320,7 @@ function Crumb({
   file: string;
 }) {
   return (
-    <div className="flex h-7 items-center border-b border-white/[0.03] bg-[#111] px-3 text-xs text-neutral-600">
+    <div className="flex h-7 items-center border-b border-[var(--border-soft)] bg-[var(--window)] px-3 text-[length:var(--font-xs)] text-[var(--text-dim)]">
       <span>
         juna
       </span>
@@ -296,7 +337,7 @@ function Crumb({
         ›
       </span>
 
-      <span className="text-neutral-400">
+      <span className="text-[var(--text-muted)]">
         {file}
       </span>
     </div>
@@ -319,29 +360,29 @@ function Code({
 
   return (
     <div className="pt-4">
-      <div className="grid min-h-7 grid-cols-[46px_minmax(0,1fr)] text-sm leading-7">
-        <span className="select-none pr-3 text-right text-neutral-700">
+      <div className="grid min-h-7 grid-cols-[46px_minmax(0,1fr)] leading-7">
+        <span className="select-none pr-3 text-right text-[var(--text-faint)]">
           1
         </span>
 
         <code>
-          <span className="text-[#c586c0]">
+          <span className="text-[var(--syntax-keyword)]">
             const
           </span>{" "}
 
-          <span className="text-[#9cdcfe]">
+          <span className="text-[var(--syntax-variable)]">
             {name}
           </span>{" "}
 
-          <span className="text-neutral-500">
+          <span className="text-[var(--text-dim)]">
             =
           </span>{" "}
 
-          <span className="text-[#dcdcaa]">
+          <span className="text-[var(--syntax-function)]">
             {fn}
           </span>
 
-          <span className="text-neutral-500">
+          <span className="text-[var(--text-dim)]">
             ;
           </span>
         </code>
@@ -358,8 +399,8 @@ function Terminal({
   fn: string;
 }) {
   return (
-    <div className="absolute left-1/2 top-1/2 z-30 w-[min(560px,calc(100%-50px))] -translate-x-1/2 -translate-y-1/2 overflow-hidden border border-white/[0.08] bg-[#0b0b0b] shadow-[0_6px_18px_rgba(0,0,0,0.2)]">
-      <div className="flex h-9 items-center border-b border-white/[0.05] bg-[#141414] px-3 text-xs text-neutral-600">
+    <div className="absolute left-1/2 top-1/2 z-30 w-[min(560px,calc(100%-50px))] -translate-x-1/2 -translate-y-1/2 overflow-hidden border border-[var(--border)] bg-[var(--panel-deep)] shadow-[var(--popup-shadow)]">
+      <div className="flex h-9 items-center border-b border-[var(--border-soft)] bg-[var(--panel-alt)] px-3 text-[length:var(--font-xs)] text-[var(--text-dim)]">
         <span>
           terminal
         </span>
@@ -369,22 +410,15 @@ function Terminal({
         </span>
       </div>
 
-      <div className="space-y-2 px-4 py-4 text-xs">
-        <p className="text-neutral-600">
+      <div className="space-y-2 px-4 py-4 text-[length:var(--font-xs)]">
+        <p className="text-[var(--text-dim)]">
           $ bun run {file}
         </p>
 
-        <p className="text-neutral-300">
-          &gt; running {fn}...
+        <p className="text-[var(--text-soft)]">
+          &gt; running{" "}
+          {fn}...
         </p>
-
-        <div className="flex items-center gap-1 pt-1">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-neutral-400" />
-
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-neutral-500 [animation-delay:150ms]" />
-
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-neutral-600 [animation-delay:300ms]" />
-        </div>
       </div>
     </div>
   );
@@ -397,40 +431,49 @@ function Result({
   tab: Tab;
   onClose: () => void;
 }) {
-  const [pos, setPos] =
+  const [
+    pos,
+    setPos,
+  ] =
     useState<Pos>({
       x: 0,
       y: 0,
     });
 
-  const drag = useRef({
-    active: false,
-    startX: 0,
-    startY: 0,
-    x: 0,
-    y: 0,
-  });
+  const drag =
+    useRef({
+      active: false,
+      startX: 0,
+      startY: 0,
+      x: 0,
+      y: 0,
+    });
 
   function start(
     e: PointerEvent<HTMLDivElement>,
   ) {
     drag.current = {
       active: true,
-      startX: e.clientX,
-      startY: e.clientY,
+      startX:
+        e.clientX,
+      startY:
+        e.clientY,
       x: pos.x,
       y: pos.y,
     };
 
-    e.currentTarget.setPointerCapture(
-      e.pointerId,
-    );
+    e.currentTarget
+      .setPointerCapture(
+        e.pointerId,
+      );
   }
 
   function move(
     e: PointerEvent<HTMLDivElement>,
   ) {
-    if (!drag.current.active) {
+    if (
+      !drag.current.active
+    ) {
       return;
     }
 
@@ -450,22 +493,24 @@ function Result({
   function end(
     e: PointerEvent<HTMLDivElement>,
   ) {
-    drag.current.active = false;
+    drag.current.active =
+      false;
 
     if (
       e.currentTarget.hasPointerCapture(
         e.pointerId,
       )
     ) {
-      e.currentTarget.releasePointerCapture(
-        e.pointerId,
-      );
+      e.currentTarget
+        .releasePointerCapture(
+          e.pointerId,
+        );
     }
   }
 
   return (
     <div
-      className="absolute left-1/2 top-1/2 z-40 w-[min(700px,calc(100%-50px))] overflow-hidden border border-white/[0.1] bg-[#111] shadow-[0_6px_18px_rgba(0,0,0,0.28)]"
+      className="absolute left-1/2 top-1/2 z-40 w-[min(700px,calc(100%-50px))] overflow-hidden border border-[var(--border)] bg-[var(--window)] shadow-[var(--popup-shadow)]"
       style={{
         transform: `translate(
           calc(-50% + ${pos.x}px),
@@ -474,54 +519,57 @@ function Result({
       }}
     >
       <div
-        onPointerDown={start}
-        onPointerMove={move}
-        onPointerUp={end}
-        onPointerCancel={end}
-        className="flex h-10 cursor-grab touch-none select-none items-center border-b border-white/[0.06] bg-[#181818] px-4 active:cursor-grabbing"
+        onPointerDown={
+          start
+        }
+        onPointerMove={
+          move
+        }
+        onPointerUp={
+          end
+        }
+        onPointerCancel={
+          end
+        }
+        className="flex h-10 cursor-grab touch-none select-none items-center border-b border-[var(--border-soft)] bg-[var(--window-top)] px-4 active:cursor-grabbing"
       >
-        <span className="text-xs text-neutral-500">
+        <span className="text-[length:var(--font-xs)] text-[var(--text-dim)]">
           result
         </span>
 
-        <span className="ml-2 text-xs font-medium text-neutral-200">
+        <span className="ml-2 text-[length:var(--font-xs)] font-medium text-[var(--text-soft)]">
           {title(tab)}
         </span>
 
         <button
           type="button"
-          onPointerDown={(e) =>
+          onPointerDown={(
+            e,
+          ) =>
             e.stopPropagation()
           }
-          onClick={onClose}
-          className="ml-auto text-sm text-neutral-500 transition-colors hover:text-white"
+          onClick={
+            onClose
+          }
+          className="ml-auto text-[var(--text-dim)] transition-colors hover:text-[var(--text)]"
         >
           ×
         </button>
       </div>
 
-      <div
-        className="
-          max-h-[470px]
-          overflow-y-auto
-          bg-[#101010]
-          p-6
-          [scrollbar-width:thin]
-          [scrollbar-color:#343434_transparent]
-          [&::-webkit-scrollbar]:w-1
-          [&::-webkit-scrollbar-track]:bg-transparent
-          [&::-webkit-scrollbar-thumb]:bg-[#343434]
-        "
-      >
-        {tab === "activity" && (
+      <div className="portfolio-scroll max-h-[470px] overflow-y-auto bg-[var(--panel)] p-6">
+        {tab ===
+          "activity" && (
           <Activity />
         )}
 
-        {tab === "gear" && (
+        {tab ===
+          "gear" && (
           <Gear />
         )}
 
-        {tab === "work" && (
+        {tab ===
+          "work" && (
           <Work />
         )}
       </div>
@@ -530,37 +578,50 @@ function Result({
 }
 
 function Activity() {
-  const [data, setData] =
+  const [
+    data,
+    setData,
+  ] =
     useState<ActivityData | null>(
       null,
     );
 
-  const [error, setError] =
+  const [
+    error,
+    setError,
+  ] =
     useState(false);
 
   useEffect(() => {
-    let active = true;
+    let active =
+      true;
 
     async function load() {
       try {
         const response =
-          await fetch("/api/activity");
-
-        if (!response.ok) {
-          throw new Error(
-            "Activity request failed.",
+          await fetch(
+            "/api/activity",
           );
+
+        if (
+          !response.ok
+        ) {
+          throw new Error();
         }
 
         const json =
           (await response.json()) as ActivityData;
 
         if (active) {
-          setData(json);
+          setData(
+            json,
+          );
         }
       } catch {
         if (active) {
-          setError(true);
+          setError(
+            true,
+          );
         }
       }
     }
@@ -568,7 +629,8 @@ function Activity() {
     load();
 
     return () => {
-      active = false;
+      active =
+        false;
     };
   }, []);
 
@@ -582,21 +644,27 @@ function Activity() {
 
   if (!data) {
     return (
-      <div className="space-y-3 py-8 text-center text-sm text-neutral-500">
-        <p>
-          syncing activity...
-        </p>
-
-        <div className="mx-auto h-px w-20 animate-pulse bg-neutral-700" />
+      <div className="py-8 text-center text-[length:var(--font-sm)] text-[var(--text-dim)]">
+        syncing activity...
       </div>
     );
   }
 
   return (
     <div className="space-y-9">
-      <Github data={data.github} />
+      <Github
+        data={
+          data.github
+        }
+      />
 
-      <Steam data={data.steam} />
+      <Steam
+        data={
+          data.steam
+        }
+      />
+
+      <OutsideCode />
     </div>
   );
 }
@@ -606,35 +674,6 @@ function Github({
 }: {
   data: ActivityData["github"];
 }) {
-  if (!data.configured) {
-    return (
-      <section>
-        <SectionTitle>
-          coding / github
-        </SectionTitle>
-
-        <Empty>
-          add GitHub credentials to
-          enable live activity.
-        </Empty>
-      </section>
-    );
-  }
-
-  if (data.error) {
-    return (
-      <section>
-        <SectionTitle>
-          coding / github
-        </SectionTitle>
-
-        <Empty>
-          {data.error}
-        </Empty>
-      </section>
-    );
-  }
-
   return (
     <section>
       <div className="flex flex-wrap items-end justify-between gap-3">
@@ -642,40 +681,52 @@ function Github({
           coding / github
         </SectionTitle>
 
-        <span className="text-xs text-neutral-500">
-          {data.total} contributions /
-          last year
+        <span className="text-[length:var(--font-xs)] text-[var(--text-dim)]">
+          {data.total}{" "}
+          contributions / last
+          year
         </span>
       </div>
 
       <Graph
-        days={data.days}
+        days={
+          data.days
+        }
       />
 
       {data.recentRepo && (
         <div className="mt-5 grid gap-1 sm:grid-cols-[120px_1fr] sm:gap-6">
-          <span className="text-xs text-neutral-500">
+          <span className="text-[length:var(--font-xs)] text-[var(--text-dim)]">
             recent push
           </span>
 
-          {data.recentRepo.isPrivate ? (
-            <span className="text-sm text-neutral-200">
-              {data.recentRepo.name}
+          {data.recentRepo
+            .isPrivate ? (
+            <span className="text-[length:var(--font-sm)] text-[var(--text-soft)]">
+              {
+                data.recentRepo
+                  .name
+              }
 
-              <span className="ml-2 text-[10px] uppercase tracking-[0.12em] text-neutral-600">
+              <span className="ml-2 text-[10px] uppercase tracking-[0.12em] text-[var(--text-dim)]">
                 private
               </span>
             </span>
           ) : (
             <a
               href={
-                data.recentRepo.url
+                data.recentRepo
+                  .url
               }
               target="_blank"
               rel="noreferrer"
-              className="text-sm text-neutral-200 transition-colors hover:text-white"
+              className="text-[length:var(--font-sm)] text-[var(--text-soft)] transition-colors hover:text-[var(--text)]"
             >
-              {data.recentRepo.name} ↗
+              {
+                data.recentRepo
+                  .name
+              }{" "}
+              ↗
             </a>
           )}
         </div>
@@ -689,35 +740,38 @@ function Graph({
 }: {
   days: Day[];
 }) {
-  const visible =
-    days.slice(-364);
-
   return (
     <div className="mt-5 overflow-x-auto pb-2">
       <div className="grid w-max grid-flow-col grid-rows-7 gap-[3px]">
-        {visible.map((day) => {
-          const count =
-            day.contributionCount;
+        {days
+          .slice(-364)
+          .map(
+            (day) => {
+              const count =
+                day.contributionCount;
 
-          const opacity =
-            count === 0
-              ? "bg-white/[0.035]"
-              : count <= 2
-                ? "bg-[#569cd6]/25"
-                : count <= 5
-                  ? "bg-[#569cd6]/45"
-                  : count <= 9
-                    ? "bg-[#569cd6]/65"
-                    : "bg-[#569cd6]/90";
+              const color =
+                count === 0
+                  ? "bg-white/[0.035]"
+                  : count <= 2
+                    ? "bg-[var(--accent)]/25"
+                    : count <= 5
+                      ? "bg-[var(--accent)]/45"
+                      : count <= 9
+                        ? "bg-[var(--accent)]/65"
+                        : "bg-[var(--accent)]/90";
 
-          return (
-            <div
-              key={day.date}
-              title={`${day.date}: ${count} contributions`}
-              className={`h-[9px] w-[9px] rounded-[2px] ${opacity}`}
-            />
-          );
-        })}
+              return (
+                <div
+                  key={
+                    day.date
+                  }
+                  title={`${day.date}: ${count} contributions`}
+                  className={`h-[9px] w-[9px] rounded-[2px] ${color}`}
+                />
+              );
+            },
+          )}
       </div>
     </div>
   );
@@ -728,81 +782,48 @@ function Steam({
 }: {
   data: ActivityData["steam"];
 }) {
-  if (!data.configured) {
-    return (
-      <section>
-        <SectionTitle>
-          playing / steam
-        </SectionTitle>
-
-        <Empty>
-          add Steam credentials to
-          enable recent games.
-        </Empty>
-      </section>
-    );
-  }
-
-  if (data.error) {
-    return (
-      <section>
-        <SectionTitle>
-          playing / steam
-        </SectionTitle>
-
-        <Empty>
-          {data.error}
-        </Empty>
-      </section>
-    );
-  }
-
   return (
     <section>
       <SectionTitle>
         playing / steam
       </SectionTitle>
 
-      {data.games.length === 0 ? (
+      {data.private ? (
         <Empty>
-          no recently played games
-          available.
+          activity private
         </Empty>
       ) : (
         <div className="mt-5 space-y-3">
           {data.games.map(
             (game) => (
               <div
-                key={game.id}
-                className="flex items-center gap-4 border-b border-white/[0.05] pb-3 last:border-0 last:pb-0"
+                key={
+                  game.id
+                }
+                className="flex items-center gap-4 border-b border-[var(--border-soft)] pb-3 last:border-0"
               >
-                <div className="h-12 w-20 shrink-0 overflow-hidden rounded-[3px] bg-white/[0.03]">
-                  <img
-                    src={game.image}
-                    alt=""
-                    className="h-full w-full object-cover opacity-80"
-                  />
-                </div>
+                <img
+                  src={
+                    game.image
+                  }
+                  alt=""
+                  className="h-12 w-20 object-cover"
+                />
 
                 <div className="min-w-0">
-                  <p className="truncate text-sm text-neutral-200">
-                    {game.name}
+                  <p className="truncate text-[length:var(--font-sm)] text-[var(--text-soft)]">
+                    {
+                      game.name
+                    }
                   </p>
 
-                  <p className="mt-1 text-xs text-neutral-500">
-                    {game.recentHours > 0
+                  <p className="mt-1 text-[length:var(--font-xs)] text-[var(--text-dim)]">
+                    {game.recentHours >
+                    0
                       ? `${game.recentHours} hrs / last 2 weeks`
                       : `${game.totalHours} hrs total`}
                   </p>
                 </div>
-
-                {game.lastPlayed && (
-                  <span className="ml-auto hidden shrink-0 text-xs text-neutral-600 sm:block">
-                    {ago(
-                      game.lastPlayed,
-                    )}
-                  </span>
-                )}
               </div>
             ),
           )}
@@ -812,31 +833,35 @@ function Steam({
   );
 }
 
-function Empty({
-  children,
-}: {
-  children: ReactNode;
-}) {
+function OutsideCode() {
   return (
-    <div className="mt-5 border border-dashed border-white/[0.08] px-4 py-5 text-xs text-neutral-500">
-      {children}
-    </div>
-  );
-}
+    <section>
+      <SectionTitle>
+        outside code
+      </SectionTitle>
 
-function SectionTitle({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  return (
-    <div className="flex items-center gap-3">
-      <span className="text-xs font-medium uppercase tracking-[0.12em] text-neutral-300">
-        {children}
-      </span>
+      <div className="mt-5 space-y-4">
+        <Item
+          label="usually"
+          value="playing something, learning something new, or both"
+        />
 
-      <div className="h-px flex-1 bg-white/[0.08]" />
-    </div>
+        <Item
+          label="learning"
+          value="new tools, game dev, and whatever catches my interest"
+        />
+
+        <Item
+          label="languages"
+          value="slowly picking up bits of a new language when i feel like it"
+        />
+
+        <Item
+          label="random"
+          value="i can spend way too long tweaking tiny details nobody else notices :p"
+        />
+      </div>
+    </section>
   );
 }
 
@@ -926,6 +951,7 @@ function Work() {
 
       <Job
         company="Virtuality Services"
+        href="https://www.virtualityservices.com/"
         role="Frontend Developer"
         date="2025"
         text="Built responsive frontend interfaces and supported the company website."
@@ -934,8 +960,9 @@ function Work() {
 
       <Job
         company="The Interns Hub"
+        href="https://www.theinternshub.com/"
         role="Web Development Intern"
-        date="2025"
+        date="2024"
         text="Early hands-on web development experience in a team environment."
         tools="HTML · CSS · JavaScript · Git"
       />
@@ -959,50 +986,65 @@ function Job({
   tools: string;
 }) {
   return (
-    <section className="border-b border-white/[0.07] pb-7 last:border-0 last:pb-0">
+    <section className="border-b border-[var(--border)] pb-7 last:border-0">
       {href ? (
         <a
           href={href}
           target="_blank"
           rel="noreferrer"
-          className="group inline-flex items-center gap-2 text-base font-medium text-neutral-100 transition-colors hover:text-white"
+          className="text-base font-medium text-[var(--text)]"
         >
-          <span>
-            {company}
-          </span>
-
-          <span className="text-xs text-neutral-600 transition-colors group-hover:text-neutral-300">
-            ↗
-          </span>
+          {company} ↗
         </a>
       ) : (
-        <p className="text-base font-medium text-neutral-100">
+        <p className="text-base font-medium text-[var(--text)]">
           {company}
         </p>
       )}
 
-      <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-neutral-500">
-        <span className="text-neutral-300">
+      <div className="mt-2 text-[length:var(--font-xs)] text-[var(--text-dim)]">
+        <span className="text-[var(--text-soft)]">
           {role}
-        </span>
-
-        <span className="text-neutral-700">
-          /
-        </span>
-
-        <span>
-          {date}
-        </span>
+        </span>{" "}
+        / {date}
       </div>
 
-      <p className="mt-4 max-w-xl text-sm leading-6 text-neutral-300">
+      <p className="mt-4 text-[length:var(--font-sm)] leading-6 text-[var(--text-soft)]">
         {text}
       </p>
 
-      <p className="mt-4 text-xs leading-5 text-neutral-500">
+      <p className="mt-4 text-[length:var(--font-xs)] text-[var(--text-dim)]">
         {tools}
       </p>
     </section>
+  );
+}
+
+function SectionTitle({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="text-[length:var(--font-xs)] font-medium uppercase tracking-[0.12em] text-[var(--text-soft)]">
+        {children}
+      </span>
+
+      <div className="h-px flex-1 bg-[var(--border)]" />
+    </div>
+  );
+}
+
+function Empty({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  return (
+    <div className="mt-5 border border-dashed border-[var(--border)] px-4 py-5 text-[length:var(--font-xs)] text-[var(--text-dim)]">
+      {children}
+    </div>
   );
 }
 
@@ -1015,15 +1057,11 @@ function Group({
 }) {
   return (
     <section>
-      <div className="mb-5 flex items-center gap-3">
-        <span className="text-xs font-medium uppercase tracking-[0.12em] text-neutral-300">
-          {title}
-        </span>
+      <SectionTitle>
+        {title}
+      </SectionTitle>
 
-        <div className="h-px flex-1 bg-white/[0.08]" />
-      </div>
-
-      <div className="space-y-4">
+      <div className="mt-5 space-y-4">
         {children}
       </div>
     </section>
@@ -1039,61 +1077,15 @@ function Item({
 }) {
   return (
     <div className="grid gap-1 sm:grid-cols-[120px_1fr] sm:gap-6">
-      <span className="text-xs text-neutral-500 sm:text-sm">
+      <span className="text-[length:var(--font-xs)] text-[var(--text-dim)]">
         {label}
       </span>
 
-      <span className="text-sm leading-6 text-neutral-200">
+      <span className="text-[length:var(--font-sm)] text-[var(--text-soft)]">
         {value}
       </span>
     </div>
   );
-}
-
-function ago(date: string) {
-  const time =
-    new Date(date).getTime();
-
-  const diff =
-    Date.now() - time;
-
-  const minute =
-    60 * 1000;
-
-  const hour =
-    minute * 60;
-
-  const day =
-    hour * 24;
-
-  if (diff < hour) {
-    return `${Math.max(
-      1,
-      Math.floor(diff / minute),
-    )}m ago`;
-  }
-
-  if (diff < day) {
-    return `${Math.floor(
-      diff / hour,
-    )}h ago`;
-  }
-
-  return `${Math.floor(
-    diff / day,
-  )}d ago`;
-}
-
-function title(tab: Tab) {
-  if (tab === "activity") {
-    return "getActivity()";
-  }
-
-  if (tab === "gear") {
-    return "getSetup()";
-  }
-
-  return "getExperience()";
 }
 
 function Row({
@@ -1114,8 +1106,10 @@ function Arrow({
   open?: boolean;
 }) {
   return (
-    <span className="w-3 text-center text-neutral-600">
-      {open ? "⌄" : ">"}
+    <span className="w-3 text-center">
+      {open
+        ? "⌄"
+        : ">"}
     </span>
   );
 }
@@ -1132,14 +1126,16 @@ function File({
   return (
     <button
       type="button"
-      onClick={onClick}
-      className={`flex h-7 w-full items-center gap-2 px-2 text-left transition-colors ${
+      onClick={
+        onClick
+      }
+      className={`flex h-7 w-full items-center gap-2 px-2 text-left ${
         active
-          ? "bg-white/[0.05] text-neutral-300"
-          : "text-neutral-600 hover:bg-white/[0.02] hover:text-neutral-400"
+          ? "bg-white/[0.05] text-[var(--text-soft)]"
+          : "text-[var(--text-dim)]"
       }`}
     >
-      <span className="text-[#3178c6]">
+      <span className="text-[var(--accent-ts)]">
         TS
       </span>
 
@@ -1150,200 +1146,26 @@ function File({
 
 function Act() {
   return (
-    <div className="flex w-10 flex-col items-center border-r border-white/[0.04] bg-[#0c0c0c] py-1 text-neutral-600">
-      <ActBtn active>
-        <Files />
-      </ActBtn>
-
-      <ActBtn>
-        <Search />
-      </ActBtn>
-
-      <ActBtn>
-        <Git />
-      </ActBtn>
-
-      <ActBtn>
-        <Run />
-      </ActBtn>
-
-      <ActBtn>
-        <Ext />
-      </ActBtn>
-
-      <div className="flex-1" />
-
-      <ActBtn>
-        <User />
-      </ActBtn>
-
-      <ActBtn>
-        <GearIcon />
-      </ActBtn>
-    </div>
+    <div className="w-10 border-r border-[var(--border-soft)] bg-[var(--panel-deep)]" />
   );
 }
 
-function ActBtn({
-  active = false,
-  children,
-}: {
-  active?: boolean;
-  children: ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      className={`flex h-9 w-9 items-center justify-center transition-colors hover:text-neutral-300 ${
-        active
-          ? "border-l-2 border-neutral-400 bg-white/[0.03] text-neutral-300"
-          : ""
-      }`}
-    >
-      {children}
-    </button>
-  );
-}
+function title(
+  tab: Tab,
+) {
+  if (
+    tab ===
+    "activity"
+  ) {
+    return "getActivity()";
+  }
 
-function Icon({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-[18px] w-[18px]"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      {children}
-    </svg>
-  );
-}
+  if (
+    tab ===
+    "gear"
+  ) {
+    return "getSetup()";
+  }
 
-function Files() {
-  return (
-    <Icon>
-      <path d="M6 3h9l4 4v14H6z" />
-      <path d="M15 3v5h4" />
-    </Icon>
-  );
-}
-
-function Search() {
-  return (
-    <Icon>
-      <circle
-        cx="10"
-        cy="10"
-        r="6"
-      />
-
-      <path d="m15 15 5 5" />
-    </Icon>
-  );
-}
-
-function Git() {
-  return (
-    <Icon>
-      <circle
-        cx="7"
-        cy="5"
-        r="2"
-      />
-
-      <circle
-        cx="7"
-        cy="19"
-        r="2"
-      />
-
-      <circle
-        cx="17"
-        cy="9"
-        r="2"
-      />
-
-      <path d="M7 7v10M9 7c0 4 6 1 6 4" />
-    </Icon>
-  );
-}
-
-function Run() {
-  return (
-    <Icon>
-      <path d="m8 5 10 7-10 7z" />
-    </Icon>
-  );
-}
-
-function Ext() {
-  return (
-    <Icon>
-      <rect
-        x="4"
-        y="4"
-        width="6"
-        height="6"
-      />
-
-      <rect
-        x="14"
-        y="4"
-        width="6"
-        height="6"
-      />
-
-      <rect
-        x="4"
-        y="14"
-        width="6"
-        height="6"
-      />
-
-      <rect
-        x="14"
-        y="14"
-        width="6"
-        height="6"
-      />
-    </Icon>
-  );
-}
-
-function User() {
-  return (
-    <Icon>
-      <circle
-        cx="12"
-        cy="12"
-        r="9"
-      />
-
-      <circle
-        cx="12"
-        cy="9"
-        r="3"
-      />
-
-      <path d="M7 18c1.4-2.5 3-3.7 5-3.7s3.6 1.2 5 3.7" />
-    </Icon>
-  );
-}
-
-function GearIcon() {
-  return (
-    <Icon>
-      <circle
-        cx="12"
-        cy="12"
-        r="3"
-      />
-
-      <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" />
-    </Icon>
-  );
+  return "getExperience()";
 }

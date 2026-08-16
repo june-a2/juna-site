@@ -1,67 +1,51 @@
+import type {
+  ReactNode,
+} from "react";
+
 export function Readme() {
   return (
-    <div className="h-full w-full overflow-y-auto bg-[#0f0f0f]">
+    <div className="portfolio-scroll h-full w-full overflow-y-auto bg-[var(--panel)]">
       <div className="mx-auto w-full max-w-6xl px-6 py-10 sm:px-10 md:px-14">
         <section>
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">
-            03 / about
-          </p>
 
           <div className="mt-5 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-            <h1 className="max-w-3xl text-3xl font-medium leading-[1.08] tracking-[-0.04em] text-neutral-100 sm:text-4xl md:text-5xl">
+            <h1 className="max-w-3xl text-[length:var(--font-title-lg)] font-medium leading-[1.08] tracking-[-0.04em] text-[var(--text)]">
               developer by training.
               <br />
               design-minded by choice.
             </h1>
 
-            <p className="max-w-xl text-sm leading-7 text-neutral-400 sm:text-[15px]">
-              i&apos;m a frontend developer with an IT
-              background, into tech, design, and games.
-              learning game dev on the side for fun, and
-              usually messing around with whatever else
-              catches my interest.
-            </p>
           </div>
         </section>
 
-        <section className="mt-10 border-t border-white/[0.08] pt-6">
+        <section className="mt-10 border-t border-[var(--border)] pt-6">
           <div className="flex items-center justify-between gap-5">
-            <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">
+            <p className="font-[family-name:var(--font-mono)] text-[length:var(--font-xs)] font-semibold uppercase tracking-[0.2em] text-[var(--text-dim)]">
               currently
             </p>
 
-            <p className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-700 sm:block">
+            <p className="hidden font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.18em] text-[var(--text-faint)] sm:block">
               what i&apos;m up to
             </p>
           </div>
 
-          <div className="mt-5 divide-y divide-white/[0.07] border-y border-white/[0.07]">
+          <div className="mt-5 divide-y divide-[var(--border)] border-y border-[var(--border)]">
             <Row
               label="Building"
               value={
                 <a
                   href="#"
-                  className="group inline-flex items-center gap-2 text-neutral-200 transition-colors hover:text-white"
+                  className="text-[var(--text-soft)] transition-colors hover:text-[var(--text)]"
                 >
-                  <span>
-                    selyne — Full-Stack Agency CRM
-                  </span>
-
-                  <span className="text-xs text-neutral-600 transition-colors group-hover:text-neutral-300">
-                    ↗
-                  </span>
+                  selyne — a full-stack
+                  agency CRM ↗
                 </a>
               }
             />
 
             <Row
               label="Learning"
-              value={
-                <span>
-                  Next.js · React · TypeScript · Tailwind CSS
-                  · PostgreSQL · Prisma · Auth.js
-                </span>
-              }
+              value="Next.js · React · PostgreSQL · Prisma"
             />
 
             <Row
@@ -71,29 +55,27 @@ export function Readme() {
 
             <Row
               label="Status"
-              value="Probably debugging something"
+              value="prolly debugging something :/"
             />
           </div>
         </section>
 
-        <section className="mt-12 border-t border-white/[0.08] pt-7">
+        <section className="mt-12 border-t border-[var(--border)] pt-7">
           <div className="flex flex-wrap items-end justify-between gap-5">
             <div>
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">
-                04 / skills
-              </p>
 
-              <h2 className="mt-4 text-3xl font-medium tracking-[-0.04em] text-neutral-100 sm:text-4xl">
+              <h2 className="mt-4 text-[length:var(--font-title-md)] font-medium tracking-[-0.04em] text-[var(--text)]">
                 tools &amp; tech.
               </h2>
             </div>
 
-            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-600 sm:text-xs">
-              technologies i use and have explored
+            <p className="font-[family-name:var(--font-mono)] text-[length:var(--font-xs)] uppercase tracking-[0.16em] text-[var(--text-dim)]">
+              technologies i use and
+              have explored
             </p>
           </div>
 
-          <div className="mt-8 divide-y divide-white/[0.07] border-y border-white/[0.07]">
+          <div className="mt-8 divide-y divide-[var(--border)] border-y border-[var(--border)]">
             <SkillRow
               title="Frontend"
               items={[
@@ -170,15 +152,15 @@ function Row({
   value,
 }: {
   label: string;
-  value: React.ReactNode;
+  value: ReactNode;
 }) {
   return (
     <div className="grid gap-2 py-4 sm:grid-cols-[150px_1fr] sm:gap-8">
-      <p className="font-mono text-xs font-semibold uppercase tracking-[0.12em] text-neutral-500">
+      <p className="font-[family-name:var(--font-mono)] text-[length:var(--font-xs)] font-semibold uppercase tracking-[0.12em] text-[var(--text-dim)]">
         {label}
       </p>
 
-      <div className="text-sm leading-6 text-neutral-300">
+      <div className="text-[length:var(--font-sm)] leading-6 text-[var(--text-soft)]">
         {value}
       </div>
     </div>
@@ -196,31 +178,38 @@ function SkillRow({
 }) {
   return (
     <div className="grid gap-4 py-5 md:grid-cols-[180px_1fr] md:gap-8">
-      <p className="font-mono text-xs font-semibold uppercase tracking-[0.12em] text-neutral-400">
+      <p className="font-[family-name:var(--font-mono)] text-[length:var(--font-xs)] font-semibold uppercase tracking-[0.12em] text-[var(--text-muted)]">
         {title}
       </p>
 
       <div className="flex flex-wrap gap-2">
-        {items.map((item) => {
-          const isLearning = learning.includes(item);
+        {items.map(
+          (item) => {
+            const isLearning =
+              learning.includes(
+                item,
+              );
 
-          return (
-            <span
-              key={item}
-              className="inline-flex items-center gap-2 rounded-full border border-white/[0.09] bg-white/[0.025] px-3 py-1.5 text-xs text-neutral-300 transition-colors hover:border-white/[0.16] hover:bg-white/[0.05] hover:text-white"
-            >
-              <span>
-                {item}
-              </span>
-
-              {isLearning && (
-                <span className="rounded-full border border-white/[0.08] px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-[0.12em] text-neutral-600">
-                  learning
+            return (
+              <span
+                key={
+                  item
+                }
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-white/[0.025] px-3 py-1.5 text-[length:var(--font-xs)] text-[var(--text-soft)] transition-colors hover:bg-white/[0.05] hover:text-[var(--text)]"
+              >
+                <span>
+                  {item}
                 </span>
-              )}
-            </span>
-          );
-        })}
+
+                {isLearning && (
+                  <span className="rounded-full border border-[var(--border)] px-1.5 py-0.5 font-[family-name:var(--font-mono)] text-[8px] uppercase tracking-[0.12em] text-[var(--text-dim)]">
+                    learning
+                  </span>
+                )}
+              </span>
+            );
+          },
+        )}
       </div>
     </div>
   );

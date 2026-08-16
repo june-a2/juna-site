@@ -55,15 +55,17 @@ export function Home() {
               junella
             </h1>
 
-            <p className="mt-10 max-w-xl text-[length:var(--font-body-lg)] leading-[var(--line-body)] text-[var(--text-muted)] md:text-[length:var(--font-body-xl)]">
-              i build responsive websites and
-              web apps with a focus on clean design, usability,
-              and thoughtful frontend details.
+            <p className="mt-8 max-w-xl text-[length:var(--font-body-lg)] leading-[var(--line-body)] text-[var(--text-muted)] md:text-[length:var(--font-body-xl)]">
+              i build responsive interfaces
+              with a focus on clean structure,
+              usability, and the frontend
+              details that make digital
+              products feel better to use.
             </p>
 
             <a
               href={`mailto:${email}`}
-              className="mt-6 inline-flex items-center gap-2 font-[family-name:var(--font-nav)] text-[length:var(--font-sm)] text-[var(--text-muted)] transition-colors duration-200 hover:text-[var(--text)]"
+              className="mt-6 inline-flex items-center gap-2 font-[family-name:var(--font-nav)] text-[length:var(--font-xs)] uppercase tracking-[0.16em] text-[var(--text-muted)] transition-colors duration-200 hover:text-[var(--text)]"
             >
               <span>
                 let&apos;s talk

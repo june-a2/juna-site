@@ -1,5 +1,7 @@
-import { Desktop } from "@/components/portfolio/desktop";
+import {
+  Desktop,
+} from "@/components/portfolio/desktop";
 
-export default function HomePage() {
+export default function Page() {
   return <Desktop />;
 }

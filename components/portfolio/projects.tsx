@@ -1,210 +1,266 @@
 "use client";
 
-import { useState } from "react";
+import {
+  useState,
+} from "react";
 
 export type Project = {
   id: string;
   name: string;
   type: string;
+
   category:
     | "web"
     | "client"
     | "wix"
     | "side";
+
   stack: string;
   preview: string;
   description: string;
+
   live?: string;
   github?: string;
 };
 
+type Props = {
+  onOpen: (
+    project: Project,
+  ) => void;
+};
+
 type Filter =
   | "all"
-  | "web"
-  | "client"
-  | "wix"
-  | "side";
-
-type Props = {
-  onOpen: (project: Project) => void;
-};
+  | Project["category"];
 
 const filters: {
   label: string;
   value: Filter;
 }[] = [
   {
-    label: "All Projects",
+    label: "all projects",
     value: "all",
   },
   {
-    label: "Web Apps",
+    label: "web apps",
     value: "web",
   },
   {
-    label: "Client Work",
+    label: "client work",
     value: "client",
   },
   {
-    label: "Wix Studio",
+    label: "wix",
     value: "wix",
   },
   {
-    label: "Sidequests",
+    label: "sidequests",
     value: "side",
   },
 ];
 
-const data: Project[] = [
+const projects: Project[] = [
   {
     id: "selyne",
-    name: "Selyne",
-    type: "Productivity app",
+    name: "selyne",
+    type:
+      "Full-Stack Agency CRM",
     category: "web",
-    stack: "Next.js / TypeScript",
-    preview: "/projects/selyne.png",
+    stack:
+      "Next.js · React · TypeScript · Tailwind CSS · shadcn/ui · Auth.js · Zod · Prisma · PostgreSQL · Vercel",
+    preview:
+      "/projects/selyne.webp",
     description:
-      "A productivity web app focused on clean project and task management.",
-    live: "#",
-    github: "#",
+      "Selyne is a full-stack CRM and operations platform built for freelancers and small agencies. It brings client management, sales pipelines, projects, tasks, deadlines, and workflow tracking into one customizable workspace, with team management and payroll features planned as the platform grows.",
+    live:
+      "https://selyne.vercel.app/login",
   },
   {
     id: "virtuality",
-    name: "Virtuality Services",
-    type: "Client website",
+    name:
+      "virtuality services",
+    type:
+      "Client Website",
     category: "client",
-    stack: "HTML / CSS / JavaScript",
-    preview: "/projects/virtuality.png",
+    stack:
+      "HTML · CSS · JavaScript",
+    preview:
+      "/projects/virtuality.png",
     description:
-      "A responsive client website built to present services clearly and professionally.",
-    live: "#",
+      "Responsive frontend work for a client service website.",
+    live:
+      "https://virtualityservices.com/",
   },
   {
     id: "privarase",
-    name: "Privarase",
-    type: "Client website",
+    name: "privarase",
+    type:
+      "Wix Website",
     category: "wix",
-    stack: "Wix Studio",
-    preview: "/projects/privarase.png",
+    stack:
+      "Wix Studio · Responsive Design",
+    preview:
+      "/projects/privarase.png",
     description:
-      "A polished Wix Studio website focused on responsive design and visual consistency.",
-    live: "#",
+      "A polished responsive website created with Wix Studio.",
+    live:
+      "https://www.privarase.com/",
+  },
+  {
+    id: "rpg-game",
+    name: "RPG Game",
+    type:
+      "Game Development",
+    category: "side",
+    stack:
+      "Godot · GDScript",
+    preview:
+      "/projects/rpg-game.png",
+    description:
+      "A 2022 RPG Maker MZ experiment where I spent more time designing characters and maps than actually making the game. Somehow, that was the fun part. Inspired by OMORI. Mostly designed characters, built maps, and made little people walk around them. It was my first little dive into game development.",
+  },
+  {
+    id: "discord-bot",
+    name: "discord bot",
+    type:
+      "Discord Automation",
+    category: "side",
+    stack:
+      "JavaScript · Node.js · Discord API",
+    preview:
+      "/projects/discord-bot.png",
+    description:
+      "A Discord bot I built before college while learning programming, with a custom command system and automated embeds for member joins, leaves, and server boosts.",
   },
 ];
 
 export function Projects({
   onOpen,
 }: Props) {
-  const [filter, setFilter] =
-    useState<Filter>("all");
+  const [
+    filter,
+    setFilter,
+  ] =
+    useState<Filter>(
+      "all",
+    );
 
-  const projects =
+  const visible =
     filter === "all"
-      ? data
-      : data.filter(
+      ? projects
+      : projects.filter(
           (project) =>
-            project.category === filter,
+            project.category ===
+            filter,
         );
 
   return (
-    <div className="h-full overflow-y-auto px-6 py-10 font-mono sm:px-10 md:px-14">
-      <div className="mx-auto max-w-6xl">
-        <p className="text-xs text-neutral-600">
-          projects/
-        </p>
+    <div className="projects-page portfolio-scroll">
+      <div className="projects-content">
+        <div className="projects-head">
+          <div>
+            <h1 className="mt-3 text-[length:var(--font-title-md)] font-medium tracking-[-0.04em] text-[var(--text)]">
+              projects
+            </h1>
+          </div>
 
-        <h1 className="mt-4 text-3xl font-medium text-neutral-100">
-          Projects
-        </h1>
-
-        <p className="mt-3 text-sm text-neutral-500">
-          Open a folder to explore a project.
-        </p>
-
-        <div className="mt-7 flex flex-wrap gap-1 border-b border-white/[0.06] pb-3">
-          {filters.map((item) => {
-            const active =
-              filter === item.value;
-
-            return (
-              <button
-                key={item.value}
-                onClick={() =>
-                  setFilter(item.value)
-                }
-                className={`px-2.5 py-1.5 text-xs transition-colors ${
-                  active
-                    ? "bg-neutral-200 text-neutral-950"
-                    : "text-neutral-500 hover:bg-white/[0.04] hover:text-neutral-200"
-                }`}
-              >
-                {item.label}
-              </button>
-            );
-          })}
+          <p className="font-[family-name:var(--font-mono)] text-[length:var(--font-xs)] text-[var(--text-dim)]">
+            click a project to open
+          </p>
         </div>
 
-        <div className="mt-12 grid grid-cols-1 gap-x-10 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
-            <button
-              key={project.id}
-              type="button"
-              onClick={() =>
-                onOpen(project)
-              }
-              className="group relative flex flex-col items-center"
-            >
-              <div className="pointer-events-none absolute bottom-[calc(100%+16px)] left-1/2 z-50 w-72 -translate-x-1/2 translate-y-2 scale-[0.97] overflow-hidden rounded-[5px] border border-white/[0.08] bg-[#151515] opacity-0 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-200 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100">
-                <div className="aspect-video overflow-hidden bg-[#0d0d0d]">
+        <div className="projects-filters">
+          {filters.map(
+            (item) => {
+              const active =
+                item.value ===
+                filter;
+
+              return (
+                <button
+                  key={
+                    item.value
+                  }
+                  type="button"
+                  onClick={() =>
+                    setFilter(
+                      item.value,
+                    )
+                  }
+                  className={`border px-3 py-1.5 font-[family-name:var(--font-mono)] text-[length:var(--font-xs)] transition-colors ${
+                    active
+                      ? "border-[var(--text-soft)] bg-[var(--text-soft)] text-[var(--window)]"
+                      : "border-[var(--border)] text-[var(--text-dim)] hover:border-[var(--text-dim)] hover:text-[var(--text-soft)]"
+                  }`}
+                >
+                  {
+                    item.label
+                  }
+                </button>
+              );
+            },
+          )}
+        </div>
+
+        <div className="projects-grid">
+          {visible.map(
+            (project) => (
+              <button
+                key={
+                  project.id
+                }
+                type="button"
+                onClick={() =>
+                  onOpen(
+                    project,
+                  )
+                }
+                className="project-card group"
+              >
+                <div className="project-card-image">
                   <img
-                    src={project.preview}
-                    alt={`${project.name} preview`}
-                    className="h-full w-full object-cover"
+                    src={
+                      project.preview
+                    }
+                    alt={
+                      project.name
+                    }
+                    className="h-full w-full object-cover opacity-40 grayscale-[35%] transition duration-300 group-hover:scale-[1.025] group-hover:opacity-60 group-hover:grayscale-0"
                   />
+
+                  <div className="absolute inset-0 bg-black/35 transition-colors duration-300 group-hover:bg-black/20" />
+
+                  <div className="absolute inset-0 flex items-center justify-center px-5">
+                    <h2 className="text-center font-[family-name:var(--font-mono)] text-2xl font-semibold tracking-[-0.04em] text-[var(--text-soft)] transition-colors group-hover:text-[var(--text)]">
+  {project.name}
+</h2>
+                  </div>
                 </div>
 
-                <div className="p-3 text-left">
-                  <p className="text-xs text-neutral-200">
-                    {project.name}
+                <div className="project-card-info">
+                  <p className="line-clamp-2 font-[family-name:var(--font-mono)] text-[length:var(--font-sm)] leading-5 text-[var(--text-muted)]">
+                    {
+                      project.description
+                    }
                   </p>
 
-                  <p className="mt-1 text-[10px] text-neutral-600">
-                    {project.stack}
-                  </p>
+                  <div className="mt-auto pt-4">
+                    <p className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.12em] text-[var(--text-dim)]">
+                      {
+                        project.type
+                      }
+                    </p>
+
+                    <p className="mt-1 truncate font-[family-name:var(--font-mono)] text-[10px] text-[var(--text-faint)]">
+                      {
+                        project.stack
+                      }
+                    </p>
+                  </div>
                 </div>
-              </div>
-
-              <div className="relative h-40 w-52 transition-transform duration-200 group-hover:-translate-y-1">
-                <div className="absolute bottom-2 left-1 right-1 top-7 rounded-[4px] border border-[#87744f]/35 bg-[#756342] shadow-[0_16px_28px_rgba(0,0,0,0.3)]" />
-
-                <div className="absolute left-4 top-2 h-9 w-24 rounded-t-[4px] bg-[#83704c]" />
-
-                <div className="absolute left-[92px] top-[18px] h-5 w-8 skew-x-[28deg] bg-[#83704c]" />
-
-                <div className="absolute left-1/2 top-8 z-10 h-[94px] w-40 -translate-x-1/2 overflow-hidden rounded-[3px] border border-white/[0.1] bg-[#111] shadow-[0_6px_16px_rgba(0,0,0,0.3)] transition-transform duration-200 group-hover:-translate-y-2">
-                  <img
-                    src={project.preview}
-                    alt=""
-                    className="h-full w-full object-cover opacity-80 group-hover:opacity-100"
-                  />
-                </div>
-
-                <div className="absolute inset-x-0 bottom-0 z-20 h-[88px] rounded-[4px] border border-[#95805a]/35 bg-[#8a7651] transition-colors group-hover:bg-[#927d56]" />
-
-                <div className="absolute bottom-5 left-1/2 z-30 -translate-x-1/2 text-[9px] uppercase tracking-[0.18em] text-[#453a27]">
-                  project
-                </div>
-              </div>
-
-              <span className="mt-4 text-sm text-neutral-300 group-hover:text-white">
-                {project.name}
-              </span>
-
-              <span className="mt-1 text-[11px] text-neutral-600">
-                {project.type}
-              </span>
-            </button>
-          ))}
+              </button>
+            ),
+          )}
         </div>
       </div>
     </div>
