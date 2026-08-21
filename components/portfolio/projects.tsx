@@ -59,7 +59,7 @@ const projects: Project[] = [
     preview: "/projects/greenland.webp",
     description:
       "greenland is a player portal built around The Isle: Evrima community, with plans for dinosaur storage, skin customization, map tracking, and Steam account linking in one place.",
-    live: "YOUR_GREENLAND_SITE_URL",
+    live: "https://greenland-ph-sigma.vercel.app/",
   },
   {
     id: "greenland-voice",
