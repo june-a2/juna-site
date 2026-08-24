@@ -56,10 +56,10 @@ const projects: Project[] = [
     type: "Player Portal / Community Platform",
     category: "web",
     stack: "Next.js · React · TypeScript · Tailwind CSS · Steam Integration",
-    preview: "/projects/greenland.webp",
+    preview: "/projects/greenlandph.webp",
     description:
       "greenland is a player portal built around The Isle: Evrima community, with plans for dinosaur storage, skin customization, map tracking, and Steam account linking in one place.",
-    live: "https://greenland-ph-sigma.vercel.app/",
+    live: "https://greenlandph.com/",
   },
   {
     id: "greenland-voice",
@@ -92,7 +92,7 @@ const projects: Project[] = [
     preview: "/projects/eps.webp",
     description:
       "contributed to the company website, CRM, and LMS through Wix Studio updates, frontend interface work, Figma designs, QA testing, and SEO improvements.",
-    live: "https://selyne.vercel.app/login",
+    live: "https:eightpointsolutions.com",
   },
   {
     id: "virtuality",
